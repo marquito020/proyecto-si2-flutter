@@ -136,7 +136,7 @@ class _NavbarState extends State<Navbar> {
                                 fontSize: 18.0)),
                       ],
                     ),
-                    if (widget.rightOptions)
+                    /* if (widget.rightOptions)
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
@@ -179,7 +179,7 @@ class _NavbarState extends State<Navbar> {
                                 onPressed: null),
                           ),
                         ],
-                      )
+                      ) */
                   ],
                 ),
                 if (widget.searchBar)

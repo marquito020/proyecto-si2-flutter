@@ -1,11 +1,16 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:now_ui_flutter/api.dart';
 import 'package:now_ui_flutter/constants/Theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 //widgets
 import 'package:now_ui_flutter/widgets/navbar.dart';
 import 'package:now_ui_flutter/widgets/drawer.dart';
 import 'package:now_ui_flutter/widgets/photo-album.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+/* api */
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 List<String> imgArray = [
   "assets/imgs/album-1.jpg",
@@ -16,13 +21,54 @@ List<String> imgArray = [
   "assets/imgs/album-6.jpg"
 ];
 
-class Profile extends StatelessWidget {
+class Profile extends StatefulWidget {
+  @override
+  _Profile createState() => _Profile();
+}
+
+class _Profile extends State<Profile> {
+  String token;
+  String baseUrl = api.url;
+  String nombre;
+  String email;
+  String telefono;
+  String departamentoNombre;
+  String departamentoDescripcion;
+
+  @override
+  void initState() {
+    super.initState();
+    /* this.fetchUser(); */
+    this.getPerfil();
+  }
+
+  getPerfil() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    SharedPreferences tenant = await SharedPreferences.getInstance();
+    String tenantID = tenant.getString('tenantID');
+    token = prefs.getString('login');
+    var responde = await http.get(
+      Uri.parse('$baseUrl/api/$tenantID/perfilGet'),
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ${token}',
+      },
+    );
+    var data = json.decode(responde.body);
+    nombre = data["usuario"]["name"];
+    email = data['usuario']['email'];
+    telefono = data['usuario']['telefono'];
+    departamentoNombre = data['departamento']['nombre'];
+    departamentoDescripcion = data['departamento']['descripcion'];
+    print(departamentoDescripcion);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         extendBodyBehindAppBar: true,
         appBar: Navbar(
-          title: "Profile",
+          title: "Perfil",
           transparent: true,
         ),
         backgroundColor: NowUIColors.bgColorScreen,
@@ -54,7 +100,7 @@ class Profile extends StatelessWidget {
                                       radius: 65.0),
                                   Padding(
                                     padding: const EdgeInsets.only(top: 24.0),
-                                    child: Text("Ryan Scheinder",
+                                    child: Text("$nombre",
                                         style: TextStyle(
                                             color: NowUIColors.white,
                                             fontWeight: FontWeight.w600,
@@ -62,7 +108,16 @@ class Profile extends StatelessWidget {
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(top: 8.0),
-                                    child: Text("Photographer",
+                                    child: Text("$email",
+                                        style: TextStyle(
+                                            color: NowUIColors.white
+                                                .withOpacity(0.85),
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w600)),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 8.0),
+                                    child: Text("Telefono: " + "$telefono",
                                         style: TextStyle(
                                             color: NowUIColors.white
                                                 .withOpacity(0.85),
@@ -78,65 +133,6 @@ class Profile extends StatelessWidget {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.end,
                                       mainAxisSize: MainAxisSize.max,
-                                      children: [
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Text("2K",
-                                                style: TextStyle(
-                                                    color: NowUIColors.white,
-                                                    fontSize: 16.0,
-                                                    fontWeight:
-                                                        FontWeight.bold)),
-                                            Text("Friends",
-                                                style: TextStyle(
-                                                    color: NowUIColors.white
-                                                        .withOpacity(0.8),
-                                                    fontSize: 12.0))
-                                          ],
-                                        ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Text("26",
-                                                style: TextStyle(
-                                                    color: NowUIColors.white,
-                                                    fontSize: 16.0,
-                                                    fontWeight:
-                                                        FontWeight.bold)),
-                                            Text("Comments",
-                                                style: TextStyle(
-                                                    color: NowUIColors.white
-                                                        .withOpacity(0.8),
-                                                    fontSize: 12.0))
-                                          ],
-                                        ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Text("48",
-                                                style: TextStyle(
-                                                    color: NowUIColors.white,
-                                                    fontSize: 16.0,
-                                                    fontWeight:
-                                                        FontWeight.bold)),
-                                            Text("Bookmarks",
-                                                style: TextStyle(
-                                                    color: NowUIColors.white
-                                                        .withOpacity(0.8),
-                                                    fontSize: 12.0))
-                                          ],
-                                        )
-                                      ],
                                     ),
                                   ),
                                 ],
@@ -152,9 +148,15 @@ class Profile extends StatelessWidget {
                       child: SingleChildScrollView(
                           child: Padding(
                     padding: const EdgeInsets.only(
-                        left: 32.0, right: 32.0, top: 42.0),
+                        left: 32.0, right: 32.0, top: 30.0),
                     child: Column(children: [
-                      Text("About me",
+                      Text("Departamento:",
+                          style: TextStyle(
+                              color: NowUIColors.text,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 17.0)),
+                      SizedBox(height: 10),
+                      Text("$departamentoNombre",
                           style: TextStyle(
                               color: NowUIColors.text,
                               fontWeight: FontWeight.w600,
@@ -162,98 +164,15 @@ class Profile extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(
                             left: 24.0, right: 24, top: 30, bottom: 24),
-                        child: Text(
-                            "An artist of considerable range, Ryan - the name taken by Meblourne-raised, Brooklyn-based Nick Murphy - writes, performs and records all of his own music.",
+                        child: Text("$departamentoDescripcion",
                             textAlign: TextAlign.center,
                             style: TextStyle(color: NowUIColors.time)),
                       ),
-                      PhotoAlbum(imgArray: imgArray)
                     ]),
                   ))),
                 ),
               ],
             ),
-            Align(
-              alignment: Alignment.center,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 0.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 8.0),
-                      // child: RaisedButton(
-                      //   textColor: NowUIColors.white,
-                      //   color: NowUIColors.info,
-                      //   onPressed: () {
-                      //     // Respond to button press
-                      //     Navigator.pushReplacementNamed(context, '/home');
-                      //   },
-                      //   shape: RoundedRectangleBorder(
-                      //     borderRadius: BorderRadius.circular(32.0),
-                      //   ),
-                      //   child: Padding(
-                      //       padding: EdgeInsets.only(
-                      //           left: 12.0, right: 12.0, top: 10, bottom: 10),
-                      //       child: Text("Follow",
-                      //           style: TextStyle(fontSize: 13.0))),
-                      // ),
-                      child: ElevatedButton(
-                        // style: ElevatedButton.styleFrom(
-                        //   primary: NowUIColors.info,
-                        //   shape: RoundedRectangleBorder(
-                        //     borderRadius: BorderRadius.circular(32.0),
-                        //   ),
-                        // ),
-                        style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(NowUIColors.info),
-                          shape: MaterialStateProperty.all(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(32.0),
-                            ),
-                          ),
-                        ),
-                        onPressed: () {
-                          // Respond to button press
-                          Navigator.pushReplacementNamed(context, '/home');
-                        },
-                        child: Padding(
-                            padding: EdgeInsets.only(
-                                left: 12.0, right: 12.0, top: 10, bottom: 10),
-                            child: Text("Follow",
-                                style: TextStyle(fontSize: 13.0))),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 4.0),
-                      child: RawMaterialButton(
-                        constraints: BoxConstraints.tight(Size(38, 38)),
-                        onPressed: () {},
-                        elevation: 4.0,
-                        fillColor: NowUIColors.defaultColor,
-                        child: Icon(FontAwesomeIcons.twitter,
-                            size: 14.0, color: Colors.white),
-                        padding: EdgeInsets.all(0.0),
-                        shape: CircleBorder(),
-                      ),
-                    ),
-                    RawMaterialButton(
-                      constraints: BoxConstraints.tight(Size(38, 38)),
-                      onPressed: () {},
-                      elevation: 4.0,
-                      fillColor: NowUIColors.defaultColor,
-                      child: Icon(FontAwesomeIcons.pinterest,
-                          size: 14.0, color: Colors.white),
-                      padding: EdgeInsets.all(0.0),
-                      shape: CircleBorder(),
-                    ),
-                  ],
-                ),
-              ),
-            )
           ],
         ));
   }

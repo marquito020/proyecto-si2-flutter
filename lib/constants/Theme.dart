@@ -7,7 +7,7 @@ class NowUIColors {
 
   static const Color defaultColor = Color.fromRGBO(136, 136, 136, 1.0);
 
-  static const Color primary = Color.fromRGBO(249, 99, 50, 1.0);
+  static const Color primary = Color.fromARGB(255, 50, 116, 202);
 
   static const Color secondary = Color.fromRGBO(68, 68, 68, 1.0);
 

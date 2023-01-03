@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:now_ui_flutter/screens/buscador.dart';
+import 'package:now_ui_flutter/screens/login.dart';
+import 'package:now_ui_flutter/screens/logout.dart';
 
 // screens
 import 'package:now_ui_flutter/screens/onboarding.dart';
@@ -19,9 +22,12 @@ class MyApp extends StatelessWidget {
         title: 'Now UI PRO Flutter',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(fontFamily: 'Montserrat'),
-        initialRoute: '/onboarding',
+        initialRoute: '/buscador',
         routes: <String, WidgetBuilder>{
           '/home': (BuildContext context) => new Home(),
+          '/login': (BuildContext context) => new Login(),
+          '/logout': (BuildContext context) => new Logout(),
+          '/buscador': (BuildContext context) => new Buscador(),
           '/settings': (BuildContext context) => new Settings(),
           "/onboarding": (BuildContext context) => new Onboarding(),
           "/pro": (BuildContext context) => new Pro(),

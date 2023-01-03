@@ -76,7 +76,7 @@ class NowDrawer extends StatelessWidget {
                   iconColor: NowUIColors.error,
                   title: "Components",
                   isSelected: currentPage == "Components" ? true : false),
-              DrawerTile(
+              /* DrawerTile(
                   icon: FontAwesomeIcons.newspaper,
                   onTap: () {
                     if (currentPage != "Articles")
@@ -84,7 +84,7 @@ class NowDrawer extends StatelessWidget {
                   },
                   iconColor: NowUIColors.primary,
                   title: "Articles",
-                  isSelected: currentPage == "Articles" ? true : false),
+                  isSelected: currentPage == "Articles" ? true : false), */
               DrawerTile(
                   icon: FontAwesomeIcons.user,
                   onTap: () {
@@ -92,9 +92,9 @@ class NowDrawer extends StatelessWidget {
                       Navigator.pushReplacementNamed(context, '/profile');
                   },
                   iconColor: NowUIColors.warning,
-                  title: "Profile",
+                  title: "Perfil",
                   isSelected: currentPage == "Profile" ? true : false),
-              DrawerTile(
+              /* DrawerTile(
                   icon: FontAwesomeIcons.fileInvoice,
                   onTap: () {
                     if (currentPage != "Account")
@@ -102,8 +102,8 @@ class NowDrawer extends StatelessWidget {
                   },
                   iconColor: NowUIColors.info,
                   title: "Account",
-                  isSelected: currentPage == "Account" ? true : false),
-              DrawerTile(
+                  isSelected: currentPage == "Account" ? true : false), */
+              /* DrawerTile(
                   icon: FontAwesomeIcons.cog,
                   onTap: () {
                     if (currentPage != "Settings")
@@ -111,11 +111,20 @@ class NowDrawer extends StatelessWidget {
                   },
                   iconColor: NowUIColors.success,
                   title: "Settings",
-                  isSelected: currentPage == "Settings" ? true : false),
+                  isSelected: currentPage == "Settings" ? true : false), */
+              DrawerTile(
+                icon: FontAwesomeIcons.signOutAlt,
+                onTap: () {
+                  Navigator.pushReplacementNamed(context, '/logout');
+                },
+                iconColor: NowUIColors.success,
+                title: "Cerrar Sesión",
+                /* isSelected: currentPage == "Settings" ? true : false */
+              ),
             ],
           ),
         ),
-        Expanded(
+        /* Expanded(
           flex: 1,
           child: Container(
               padding: EdgeInsets.only(left: 8, right: 16),
@@ -145,7 +154,7 @@ class NowDrawer extends StatelessWidget {
                           currentPage == "Getting started" ? true : false),
                 ],
               )),
-        ),
+        ), */
       ]),
     ));
   }
