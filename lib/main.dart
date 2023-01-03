@@ -1,3 +1,5 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:now_ui_flutter/screens/buscador.dart';
 import 'package:now_ui_flutter/screens/login.dart';
@@ -12,8 +14,43 @@ import 'package:now_ui_flutter/screens/settings.dart';
 import 'package:now_ui_flutter/screens/register.dart';
 import 'package:now_ui_flutter/screens/articles.dart';
 import 'package:now_ui_flutter/screens/components.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() => runApp(MyApp());
+import 'firebase_options.dart';
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // If you're going to use other Firebase services in the background, such as Firestore,
+  // make sure you call `initializeApp` before using other Firebase services.
+  await Firebase.initializeApp();
+
+  print("Handling a background message: ${message.messageId}");
+}
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
+  /* messagin */
+  messaging.getToken().then((value) => print(value));
+  /* Token Notification */
+  SharedPreferences tokenNotifications = await SharedPreferences.getInstance();
+  await tokenNotifications.setString('notification', await messaging.getToken());
+
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    print('Got a message whilst in the foreground!');
+    print('Message data: ${message.data}');
+
+    if (message.notification != null) {
+      print('Message also contained a notification: ${message.notification}');
+    }
+  });
+  runApp(MyApp());
+}
+/* void main() => runApp(MyApp()); */
 
 class MyApp extends StatelessWidget {
   @override
