@@ -193,9 +193,47 @@ class _LoginState extends State<Login> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     /* SharedPreferences id_user = await SharedPreferences.getInstance(); */
     await prefs.setString('login', body["token"]);
+    /* Guardar Token de notificacion */
+    notification();
     /* await id_user.setInt('id', body["user"]["id"]); */
-    Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => Home()),
-        (Route<dynamic> route) => false);
+  }
+
+  void notification() async {
+    SharedPreferences tokenNotifications =
+        await SharedPreferences.getInstance();
+    String tokenNotification = tokenNotifications.getString('notification');
+    SharedPreferences tenant = await SharedPreferences.getInstance();
+    String tenantID = tenant.getString('tenantID');
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString('login');
+    var response = await http.post(
+      Uri.parse('$baseUrl/api/$tenantID/notificacionToken'),
+      body: ({
+        "tokenNotification": tokenNotification.toString(),
+      }),
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ${token}',
+      },
+    );
+    if (response.statusCode == 200) {
+      final body = jsonDecode(response.body);
+      /* print('Login Success ' + body["token"]); */
+      /* ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Login Success ' + body["token"]),
+        )); */
+      /* ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Id User: ' + body["user"]["id"].toString()),
+        )); */
+      /* page Route */
+      /* pageRoute(body); */
+      print(body);
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => Home()),
+          (Route<dynamic> route) => false);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('No se guardo Token de notificacion')));
+    }
   }
 }
