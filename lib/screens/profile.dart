@@ -55,12 +55,14 @@ class _Profile extends State<Profile> {
       },
     );
     var data = json.decode(responde.body);
-    nombre = data["usuario"]["name"];
-    email = data['usuario']['email'];
-    telefono = data['usuario']['telefono'];
-    departamentoNombre = data['departamento']['nombre'];
-    departamentoDescripcion = data['departamento']['descripcion'];
-    print(departamentoDescripcion);
+    /* print(departamentoDescripcion); */
+    setState(() {
+      nombre = data["usuario"]["name"];
+      email = data['usuario']['email'];
+      telefono = data['usuario']['telefono'];
+      departamentoNombre = data['departamento']['nombre'];
+      departamentoDescripcion = data['departamento']['descripcion'];
+    });
   }
 
   @override
