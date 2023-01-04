@@ -44,8 +44,7 @@ class _LoginState extends State<Login> {
       /* Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => Home()),
           (Route<dynamic> route) => false); */
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => Home()));
+      Navigator.pushNamed(context, '/home');
       /* Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => DashBoard())); */
     }
@@ -228,9 +227,10 @@ class _LoginState extends State<Login> {
       /* page Route */
       /* pageRoute(body); */
       print(body);
-      Navigator.of(context).pushAndRemoveUntil(
+      /* Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => Home()),
-          (Route<dynamic> route) => false);
+          (Route<dynamic> route) => false); */
+      Navigator.pushNamed(context, '/home');
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('No se guardo Token de notificacion')));

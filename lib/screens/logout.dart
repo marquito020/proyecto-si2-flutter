@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:now_ui_flutter/api.dart';
+import 'package:now_ui_flutter/main.dart';
 import 'package:now_ui_flutter/screens/login.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -45,7 +46,14 @@ class _LogoutState extends State<Logout> {
     await tenant.clear();
     /* await id_user.clear();
     await id_trabajo.clear(); */
-    Navigator.pushNamed(context, '/buscador');
+    /* Navigator.pushNamed(context, '/buscador'); */
+    /* retornar al main*/
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MyApp(),
+      ),
+    );
   }
 
   @override
