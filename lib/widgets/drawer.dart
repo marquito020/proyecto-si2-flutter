@@ -65,9 +65,9 @@ class NowDrawer extends StatelessWidget {
                       Navigator.pushReplacementNamed(context, '/home');
                   },
                   iconColor: NowUIColors.primary,
-                  title: "Home",
+                  title: "Solicitudes",
                   isSelected: currentPage == "Home" ? true : false),
-              DrawerTile(
+              /* DrawerTile(
                   icon: FontAwesomeIcons.dharmachakra,
                   onTap: () {
                     if (currentPage != "Components")
@@ -75,7 +75,16 @@ class NowDrawer extends StatelessWidget {
                   },
                   iconColor: NowUIColors.error,
                   title: "Components",
-                  isSelected: currentPage == "Components" ? true : false),
+                  isSelected: currentPage == "Components" ? true : false), */
+              DrawerTile(
+                  icon: FontAwesomeIcons.user,
+                  onTap: () {
+                    if (currentPage != "Creditos")
+                      Navigator.pushReplacementNamed(context, '/creditos');
+                  },
+                  iconColor: NowUIColors.warning,
+                  title: "Creditos",
+                  isSelected: currentPage == "Creditos" ? true : false),
               /* DrawerTile(
                   icon: FontAwesomeIcons.newspaper,
                   onTap: () {

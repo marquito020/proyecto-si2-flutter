@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:now_ui_flutter/screens/buscador.dart';
+import 'package:now_ui_flutter/screens/creditos.dart';
 import 'package:now_ui_flutter/screens/login.dart';
 import 'package:now_ui_flutter/screens/logout.dart';
 
@@ -65,6 +66,7 @@ class MyApp extends StatelessWidget {
           '/login': (BuildContext context) => new Login(),
           '/logout': (BuildContext context) => new Logout(),
           '/buscador': (BuildContext context) => new Buscador(),
+          '/creditos': (BuildContext context) => new Creditos(),
           '/settings': (BuildContext context) => new Settings(),
           "/onboarding": (BuildContext context) => new Onboarding(),
           "/pro": (BuildContext context) => new Pro(),
